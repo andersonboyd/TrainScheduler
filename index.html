@@ -7,13 +7,56 @@
     <title>Train Scheduler</title>
     <link rel="stylesheet" type="text/css" href="reset.css">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div id="train-container"></div>
-    <div id="train-form">
-        <form id="train-search">
-
-        </form>
+    <div id="container">
+        <br/>
+        <div class="jumbotron">
+            <h1 class="text-center">Train Schedule</h1>
+        </div>
+        <div id="row">
+            <div class="col-lg-12" id="train-table">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                        <th scope="col">Train name</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Frequency (min)</th>
+                        <th scope="col">Next arrival</th>
+                        <th scope="col">Minutes away</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex flex-row justify-content-around" id="row">
+            <div class="col"></div>
+            <div class="col-lg-6 align-self-center" id="train-form">
+                <form role="form">
+                    <div class="form-group row">
+                        <label for="train-name">Train:</label>
+                        <input class="form-control" id="train-name" type="text">
+                    </div>
+                    <div class="form-group row">
+                        <label for="train-dest">Destination:</label>
+                        <input class="form-control" id="train-dest" type="text">
+                    </div>
+                    <div class="form-group row">
+                        <label for="train-time">First train time (HH:MM - military time):</label>
+                        <input class="form-control" id="train-time" type="number">
+                    </div>
+                    <div class="form-group row">
+                        <label for="train-freq">Frequency (min):</label>
+                        <input class="form-control" id="train-freq" type="number">
+                    </div>
+                    <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
