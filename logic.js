@@ -20,10 +20,9 @@ var nextArrival;
 
 function makeTable() {
   var row = $("<tr>");
-  row.addClass("newRow");
   for (var i = 0; i < 5; i++) {
       var td = $("<td>");
-      td.addClass("box-" + i)
+      td.addClass("box-"+i);
       row.append(td);
   }
   $("tbody").append(row);
@@ -47,25 +46,37 @@ $("#add-train").on("click", function(){
   trainDest = $("#train-dest").val();
   trainTime = $("#train-time").val();
   trainFreq = $("#train-freq").val();
-  database.ref().push({
-    trainName: trainName,
-    trainDest: trainDest,
-    trainTime: trainTime,
-    trainFreq: trainFreq
-  })
-  console.log(trainName, trainDest, trainTime, trainFreq);
-  makeTable();
-  $(".box-0").text(trainName);
-  $(".box-1").text(trainDest);
-  $(".box-2").text(trainFreq);
+  var newTrain = {
+    name: trainName,
+    dest: trainDest,
+    time: trainTime,
+    freq: trainFreq
+  }
+
+  database.ref().push(newTrain);
+  console.log(newTrain);
+
+  $("#train-name").val("");
+  $("#train-dest").val("");
+  $("#train-time").val("");
+  $("#train-freq").val("");
 });
 
 database.ref().on("child_added", function(childSnapshot){
   var csv = childSnapshot.val();
   console.log(csv.trainName, csv.trainDest, csv.trainTime, csv.trainFreq);
-  makeTable();
-  $(".box-0").text(csv.trainName);
-  $(".box-1").text(csv.trainDest);
-  $(".box-2").text(csv.trainFreq);
+  var newName = csv.trainName;
+  var newDest = csv.trainDest;
+  var newTime = csv.trainTime;
+  var newFreq = csv.trainFreq;
+  $("#train-table > tbody").append(
+    $("<tr>").append(
+      $("<td>").text(newName),
+      $("<td>").text(newDest),
+      $("<td>").text(newFreq),
+      $("<td>"),
+      $("<td>")
+    )
+  );
 });
 
