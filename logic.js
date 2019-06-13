@@ -24,7 +24,7 @@ database.ref().on("value", function(snapshot){
     trainName = sv.trainName;
     trainDest = sv.trainDest;
     trainTime = sv.trainTime;
-    trainFreq = sv.trainFreq;
+    trainFreq = parseInt(sv.trainFreq);
     console.log(trainName, trainDest);
   }else{
     console.log(trainName, trainDest);
@@ -33,11 +33,12 @@ database.ref().on("value", function(snapshot){
   console.log("Read failed: "+errorObject.code);
 });
 
-$("#add-train").on("click", function(){
+$("#add-train").on("click", function(event){
+  event.preventDefault();
   trainName = $("#train-name").val();
   trainDest = $("#train-dest").val();
   trainTime = $("#train-time").val();
-  trainFreq = $("#train-freq").val();
+  trainFreq = parseInt($("#train-freq").val());
   var newTrain = {
     name: trainName,
     dest: trainDest,
@@ -60,16 +61,15 @@ database.ref().on("child_added", function(childSnapshot){
   var newName = csv.name;
   var newDest = csv.dest;
   var newTime = csv.time;
-  var newFreq = csv.freq;
+  var newFreq = parseInt(csv.freq);
 
-  var newTimeConverted = moment(newTime).subtract(1, "years");
+  var newTimeConverted = moment(newTime, "HH:mm").subtract(1, "years");
   console.log(newTimeConverted);
 
   var currentTime = moment();
-  var currentTimeFormatted = moment(currentTime).format("hh:mm");
-  console.log("CURRENT TIME: "+ currentTimeFormatted);
+  console.log("CURRENT TIME: "+ moment(currentTime, "hh:mm"));
 
-  var diffTime = moment(currentTimeFormatted).diff(moment(newTimeConverted), "minutes");
+  var diffTime = moment(currentTime).diff(moment(newTimeConverted), "minutes");
   console.log("DIFFERENCE IN TIME: "+diffTime);
 
   var remainder = diffTime % newFreq;
@@ -78,7 +78,7 @@ database.ref().on("child_added", function(childSnapshot){
   minutesAway = newFreq - remainder;
   console.log(minutesAway);
 
-  nextArrival = moment(currentTimeFormatted).add(minutesAway, "minutes");
+  nextArrival = moment(currentTime).add(minutesAway, "minutes");
   console.log(nextArrival);
 
   $("#train-table > tbody").append(
@@ -86,7 +86,7 @@ database.ref().on("child_added", function(childSnapshot){
       $("<td>").text(newName),
       $("<td>").text(newDest),
       $("<td>").text(newFreq),
-      $("<td>").text(nextArrival),
+      $("<td>").text(moment(nextArrival).format("hh:mm")),
       $("<td>").text(minutesAway)
     )
   );
